@@ -1,3 +1,4 @@
+import 'dotenv/config'; // Solo si aún no se cargan las variables de entorno
 import { NextResponse } from 'next/server';
 import { Pool } from 'pg';
 
