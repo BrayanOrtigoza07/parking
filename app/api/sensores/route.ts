@@ -1,4 +1,4 @@
-import 'dotenv/config'; // Solo si aún no se cargan las variables de entorno
+import 'dotenv/config';
 import { NextResponse } from 'next/server';
 import { Pool } from 'pg';
 
@@ -7,9 +7,8 @@ const pool = new Pool({
 });
 
 export async function GET() {
-  const numero = 1;
   const estado = Math.random() > 0.5 ? 'Libre' : 'Ocupado';
-  const distancia = Math.floor(Math.random() * 200); // Simulación de distancia en cm
+  const distancia = Math.floor(Math.random() * 200); // Simulación de distancia en cm (0-200 cm)
   const fecha = new Date().toISOString();
 
   try {
@@ -19,15 +18,11 @@ export async function GET() {
       [distancia, fecha, estado]
     );
 
-    // Devuelve el dato recién insertado para mostrarlo en la interfaz
-    const espacio = {
-      numero,
-      estado,
-      distancia,
-      fecha,
-    };
+    // Consulta para obtener todos los registros de la tabla sensor_data
+    const result = await pool.query('SELECT * FROM sensor_data ORDER BY fecha DESC');
 
-    return NextResponse.json(espacio);
+    // Devuelve todos los registros como respuesta JSON
+    return NextResponse.json(result.rows);
   } catch (error) {
     console.error('Error al insertar en la base de datos:', error);
     return NextResponse.json({ error: 'Error al insertar en la base de datos' });
