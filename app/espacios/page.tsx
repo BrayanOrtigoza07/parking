@@ -15,9 +15,15 @@ export default function EspaciosPage() {
 
   useEffect(() => {
     const fetchEspacios = async () => {
-      const res = await fetch('/api/sensores');
-      const data = await res.json();
-      setEspacios(data); // Guarda todos los registros en el estado
+      try {
+        const res = await fetch('/api/sensores');
+        const data = await res.json();
+        console.log('Datos recibidos:', data);  // Verificar los datos en la consola
+        // Asegúrate de que data es un arreglo antes de guardarlo en el estado
+        setEspacios(Array.isArray(data) ? data : []); 
+      } catch (error) {
+        console.error('Error al obtener datos:', error);  // Muestra el error en la consola si algo falla
+      }
     };
 
     fetchEspacios();
@@ -67,7 +73,8 @@ export default function EspaciosPage() {
               </tr>
             </thead>
             <tbody className="text-gray-700 text-sm font-light">
-              {espacios.map((espacio) => (
+              {/* Asegúrate de que espacios es un arreglo antes de hacer map */}
+              {Array.isArray(espacios) && espacios.map((espacio) => (
                 <tr key={espacio.id} className="hover:bg-gray-100 border-b border-gray-200">
                   <td className="px-6 py-3 text-center">{espacio.id}</td>
                   <td className="px-6 py-3 text-center">{espacio.distancia}</td>
