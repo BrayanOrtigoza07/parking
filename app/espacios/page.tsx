@@ -16,17 +16,18 @@ export default function EspaciosPage() {
   useEffect(() => {
     const fetchEspacios = async () => {
       try {
-        const res = await fetch('/api/sensores');
+        const res = await fetch('https://parking-sandy.vercel.app/api/sensores'); // URL completa de tu API en Vercel
+        if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
         const data = await res.json();
-        console.log('Datos recibidos:', data); // Verificar los datos en la consola
+        console.log('Datos recibidos:', data);  // Verificar los datos en la consola
         setEspacios(Array.isArray(data) ? data : []);
       } catch (error) {
-        console.error('Error al obtener datos:', error); // Muestra el error en la consola si algo falla
+        console.error('Error al obtener datos:', error);  // Muestra el error en la consola si algo falla
       }
     };
 
     fetchEspacios();
-    const interval = setInterval(fetchEspacios, 5000); // Actualización cada 5 segundos
+    const interval = setInterval(fetchEspacios, 10000); // Actualización cada 10 segundos
 
     return () => clearInterval(interval);
   }, []);
