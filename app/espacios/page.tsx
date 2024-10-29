@@ -18,11 +18,10 @@ export default function EspaciosPage() {
       try {
         const res = await fetch('/api/sensores');
         const data = await res.json();
-        console.log('Datos recibidos:', data);  // Verificar los datos en la consola
-        // Asegúrate de que data es un arreglo antes de guardarlo en el estado
-        setEspacios(Array.isArray(data) ? data : []); 
+        console.log('Datos recibidos:', data); // Verificar los datos en la consola
+        setEspacios(Array.isArray(data) ? data : []);
       } catch (error) {
-        console.error('Error al obtener datos:', error);  // Muestra el error en la consola si algo falla
+        console.error('Error al obtener datos:', error); // Muestra el error en la consola si algo falla
       }
     };
 
@@ -34,6 +33,15 @@ export default function EspaciosPage() {
 
   return (
     <div className="flex flex-col items-center p-8 bg-gray-50 min-h-screen">
+      {/* Botón para volver a la página de inicio, ahora arriba */}
+      <div className="w-full flex justify-start mb-6">
+        <Link href="/">
+          <button className="bg-blue-600 text-white px-6 py-3 rounded-full text-lg font-medium shadow-lg hover:bg-blue-700 transition duration-300 ease-in-out">
+            Volver a la Página de Inicio
+          </button>
+        </Link>
+      </div>
+
       <h1 className="text-5xl font-bold mb-4 text-blue-700">Disponibilidad de Espacio de Parqueo</h1>
       <p className="mb-8 text-lg text-gray-600">Visualización en tiempo real de la disponibilidad de espacios en el parqueo.</p>
 
@@ -73,7 +81,6 @@ export default function EspaciosPage() {
               </tr>
             </thead>
             <tbody className="text-gray-700 text-sm font-light">
-              {/* Asegúrate de que espacios es un arreglo antes de hacer map */}
               {Array.isArray(espacios) && espacios.map((espacio) => (
                 <tr key={espacio.id} className="hover:bg-gray-100 border-b border-gray-200">
                   <td className="px-6 py-3 text-center">{espacio.id}</td>
@@ -90,13 +97,6 @@ export default function EspaciosPage() {
           </table>
         </div>
       </div>
-
-      {/* Botón para volver a la página de inicio */}
-      <Link href="/">
-        <button className="mt-10 bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-medium shadow-lg hover:bg-blue-700 transition duration-300 ease-in-out">
-          Volver a la Página de Inicio
-        </button>
-      </Link>
     </div>
   );
 }
