@@ -6,14 +6,13 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
-export async function GET() {
-  // Genera datos simulados para el sensor
-  const estado = Math.random() > 0.5 ? 'Libre' : 'Ocupado';
-  const distancia = Math.floor(Math.random() * 200); // Simulación de distancia en cm (0-200 cm)
-  const fecha = new Date().toISOString();
-
+export async function POST(request: Request) {
   try {
-    // Inserta el dato generado en la tabla sensor_data
+    // Obtiene el cuerpo de la solicitud
+    const { distancia, estado } = await request.json();
+    const fecha = new Date().toISOString();
+
+    // Inserta los datos en la tabla sensor_data
     await pool.query(
       'INSERT INTO sensor_data (distancia, fecha, estado) VALUES ($1, $2, $3)',
       [distancia, fecha, estado]
